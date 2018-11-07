@@ -1,0 +1,6 @@
+[flake8]
+ignore = E111, E114, C901
+max-line-length = 120
+indent-string=' '
+exclude = tests/*
+max-complexity = 10

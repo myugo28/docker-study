@@ -1,0 +1,48 @@
+version: '3.0'
+services:
+
+  mysql:
+    image: mysql:8.0.13
+    volumes:
+    - ./data/mysql:/var/lib/mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=mypassword
+    - MYSQL_DATABASE=myapp
+    ports:
+    - 3306:3306
+    expose:
+    - 3306
+    container_name: test-mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOST=mysql
+    - PMA_USER=root
+    - PMA_PASSWORD=mypassword
+    ports:
+    - 8080:80
+    volumes:
+    - ./data/phpmyadminsessions:/sessions
+    container_name: test-phpmyadmin
+
+  python:
+    build: ./python
+    volumes:
+    - ./python:/code
+    container_name: test-python
+    tty: true
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_DATABASE=myapp
+      - DB_PASSWORD=mypassword
+
+  nginx:
+    image: nginx:latest
+    ports:
+    - 80:80
+    volumes:
+    - ./public:/usr/share/nginx/html
+    container_name: test-nginx

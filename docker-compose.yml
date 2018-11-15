@@ -39,10 +39,3 @@ services:
       - DB_DATABASE=myapp
       - DB_PASSWORD=mypassword
 
-  nginx:
-    image: nginx:latest
-    ports:
-    - 80:80
-    volumes:
-    - ./public:/usr/share/nginx/html
-    container_name: test-nginx
